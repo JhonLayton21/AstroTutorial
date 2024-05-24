@@ -1,6 +1,5 @@
 ---
-import '../styles/global.css';
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 const pageTitle = "Sobre mi";
 
 const identity = {
@@ -13,19 +12,26 @@ const identity = {
 const skills = ["HTML", "CSS", "JavaScript", "React", "Astro"];
 
 const skillsLinks = [
-  { name: "HTML", link: "https://developer.mozilla.org/en-US/docs/Web/HTML"},
-  { name: "CSS", link: "https://developer.mozilla.org/es/docs/Web/CSS"},
-  { name: "JavaScript", link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript"},
-  { name: "React", link: "https://legacy.reactjs.org/docs/getting-started.html"},
-  { name: "Astro", link: "https://docs.astro.build/es/getting-started/"}
+    { name: "HTML", link: "https://developer.mozilla.org/en-US/docs/Web/HTML" },
+    { name: "CSS", link: "https://developer.mozilla.org/es/docs/Web/CSS" },
+    {
+        name: "JavaScript",
+        link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+    },
+    {
+        name: "React",
+        link: "https://legacy.reactjs.org/docs/getting-started.html",
+    },
+    { name: "Astro", link: "https://docs.astro.build/es/getting-started/" },
 ];
-
 
 const happy = true;
 const finished = false;
 const goal = 3;
 
-const skillColor = "navy"; const fontWeight = "bold"; const textCase = "Uppercase";
+const skillColor = "navy";
+const fontWeight = "bold";
+const textCase = "Uppercase";
 ---
 
 <html lang="en">
@@ -34,66 +40,71 @@ const skillColor = "navy"; const fontWeight = "bold"; const textCase = "Uppercas
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>{pageTitle}</title>
-        <style define:vars={{skillColor, fontWeight, textCase}}>
-            h1{
-                color: purple;
-                font-size: 4rem;
-            }
-            .skill{
+        <style define:vars={{ skillColor, fontWeight, textCase }}>
+            .skill {
                 color: var(--skillColor);
                 font-weight: var(--fontWeight);
                 text-transform: var(--textCase);
             }
+            .skill a{
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
-        <a href="/">Inicio</a>
-        <a href="/about">Sobre mi</a>
-        <a href="/blog">Blog</a>
+        <BaseLayout pageTitle = {pageTitle}>
+            <h1>Mi sitio Astro</h1>
+            <h2>... ¡y mi nuevo sitio Astro!</h2>
 
-        <h1>Mi sitio Astro</h1>
-        <h1>{pageTitle}</h1>
-        <h2>... ¡y mi nuevo sitio Astro!</h2>
+            <p>
+                Estoy trabajando en el tutorial introductorio de Astro. Esta es
+                la segunda página de mi sitio web, ¡y es la primera que he
+                construido yo mismo!
+            </p>
 
-        <p>
-            Estoy trabajando en el tutorial introductorio de Astro. Esta es la
-            segunda página de mi sitio web, ¡y es la primera que he construido
-            yo mismo!
-        </p>
+            <p>
+                Este sitio se irá actualizando a medida que vaya completando más
+                partes del tutorial, ¡así que no dejes de visitarlo para ver
+                cómo va mi viaje!
+            </p>
 
-        <p>
-            Este sitio se irá actualizando a medida que vaya completando más
-            partes del tutorial, ¡así que no dejes de visitarlo para ver cómo va
-            mi viaje!
-        </p>
+            <p>He aquí algunos datos sobre mí:</p>
+            <ul>
+                <li>Me llamo {identity.firstName}.</li>
+                <li>
+                    Vivo en {identity.country} y trabajo como {
+                        identity.occupation
+                    }.
+                </li>
+                {
+                    identity.hobbies.length >= 2 && (
+                        <li>
+                            Dos de mis aficiones son: {identity.hobbies[0]} y{" "}
+                            {identity.hobbies[1]}
+                        </li>
+                    )
+                }
+            </ul>
+            <p>Mis habilidades son:</p>
+            <ul>
+                {
+                    skillsLinks.map((skillLink) => (
+                        <li class="skill">
+                            <a href={skillLink.link}>{skillLink.name}</a>
+                        </li>
+                    ))
+                }
+            </ul>
 
-        <p>He aquí algunos datos sobre mí:</p>
-        <ul>
-            <li>Me llamo {identity.firstName}.</li>
-            <li>
-                Vivo en {identity.country} y trabajo como {identity.occupation}.
-            </li>
+            {happy && <p>Estoy feliz de aprender Astro!</p>}
+            {finished && <p>He terminado este tutorial!</p>}
             {
-                identity.hobbies.length >= 2 && (
-                    <li>
-                        Dos de mis aficiones son: {identity.hobbies[0]} y{" "}
-                        {identity.hobbies[1]}
-                    </li>
+                goal === 3 ? (
+                    <p>Mi objetivo es terminar en 3 dias.</p>
+                ) : (
+                    <p>Mi objetivo no son 3 dias.</p>
                 )
             }
-        </ul>
-        <p>Mis habilidades son:</p>
-        <ul>
-            {skillsLinks.map((skillLink) => (
-                <li class="skill">
-                    <a href={skillLink.link}>{skillLink.name}</a>
-                </li>
-            ))}
-        </ul>
-
-        {happy && <p>Estoy feliz de aprender Astro!</p>}
-        {finished && <p>He terminado este tutorial!</p>}
-        {goal === 3 ? <p>Mi objetivo es terminar en 3 dias.</p> : <p>Mi objetivo no son 3 dias.</p>}
+        </BaseLayout>
     </body>
 </html>
